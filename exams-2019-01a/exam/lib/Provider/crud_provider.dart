@@ -15,16 +15,18 @@ class CrudProvider extends ChangeNotifier {
   Future<List<Phone>> getPhones() async {
     if (fromServer) {
       localList = await phonesRep.getAllPhonesFromServer();
-      List<Phone> aux = await dbRep.getAll();
       fromServer = false;
     } else {
       localList = await dbRep.getAll();
     }
     List<Phone> displayedPhones = new List<Phone>();
+    //await dbRep.deleteAll();
+    logger.e(localList.length.toString());
     for (Phone phone in localList) {
       if (phone.quantity > phone.reserved) {
         displayedPhones.add(phone);
       }
+      await dbRep.add(phone);
     }
     displayedPhones.sort((a, b) => a.quantity.compareTo(b.quantity));
     logger.i("CRUD Provider: Phones have been retrieved");

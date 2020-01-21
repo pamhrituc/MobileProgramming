@@ -13,7 +13,7 @@ class DBRep {
       final phone = Phone.fromJson(elem);
       //print(phone.toJson());
       phoneList.add(phone);
-      print(phoneList);
+      //print(phoneList);
     }
     logger.i("DB: getAll");
     return phoneList;
@@ -29,6 +29,7 @@ class DBRep {
   Future<Phone> add(Phone phone) async {
     final sql = '''INSERT INTO ${DBCreator.phoneTable} 
     (
+      ${DBCreator.id},
       ${DBCreator.name},
     ${DBCreator.size},
     ${DBCreator.manufacturer},
@@ -37,6 +38,7 @@ class DBRep {
     )
     VALUES
     (
+      ${phone.id},
       "${phone.name}",
     ${phone.size},
     "${phone.manufacturer}",
@@ -44,11 +46,10 @@ class DBRep {
     ${phone.reserved}
     )
     ''';
-    final result = await db.rawInsert(sql);
-    print(result);
-    int last_inserted_id = await getLastId();
-    phone.setId(last_inserted_id);
-    logger.i("DB: added " + phone.id.toString());
+    try {
+      final result = await db.rawInsert(sql);
+      logger.i("DB: added " + phone.id.toString());
+    } catch (e) {}
     return phone;
   }
 
@@ -115,7 +116,6 @@ class DBRep {
     )
     ''';
     final result = await db.rawInsert(sql);
-    print(result);
     logger.i("DB: reserved " + phone.id.toString());
     return phone;
   }
@@ -125,7 +125,6 @@ class DBRep {
         '''SELECT ${DBCreator.id}, ${DBCreator.name}, ${DBCreator.size}, ${DBCreator.manufacturer}, ${DBCreator.quantity}, ${DBCreator.reserved} FROM ${DBCreator.reservedTable}''';
     final data = await db.rawQuery(sql);
     List<Phone> phoneList = List();
-    print(data);
     for (var elem in data) {
       final phone = Phone.fromJson(elem);
       logger.i(phone.toJson());
