@@ -59,6 +59,12 @@ class DBRep {
     logger.i("DB: deleted " + phone.id.toString());
   }
 
+  Future<void> deleteAll() async {
+    final sql = '''DELETE FROM ${DBCreator.phoneTable}''';
+    await db.rawDelete(sql);
+    logger.i("DB: deleted all");
+  }
+
   Future<void> update(Phone oldPhone, Phone newPhone) async {
     final sql = '''UPDATE ${DBCreator.phoneTable}
     SET ${DBCreator.name} = "${newPhone.name}",
@@ -94,14 +100,18 @@ class DBRep {
       ${DBCreator.id},
       ${DBCreator.name},
     ${DBCreator.size},
-    ${DBCreator.manufacturer}
+    ${DBCreator.manufacturer},
+    ${DBCreator.quantity},
+    ${DBCreator.reserved}
     )
     VALUES
     (
       ${phone.id},
       "${phone.name}",
     ${phone.size},
-    "${phone.manufacturer}"
+    "${phone.manufacturer}",
+    ${phone.quantity},
+    ${phone.reserved}
     )
     ''';
     final result = await db.rawInsert(sql);
@@ -111,16 +121,18 @@ class DBRep {
   }
 
   Future<List<Phone>> getReservedPhones() async {
-    final sql = '''SELECT * FROM ${DBCreator.reservedTable}''';
+    final sql =
+        '''SELECT ${DBCreator.id}, ${DBCreator.name}, ${DBCreator.size}, ${DBCreator.manufacturer}, ${DBCreator.quantity}, ${DBCreator.reserved} FROM ${DBCreator.reservedTable}''';
     final data = await db.rawQuery(sql);
     List<Phone> phoneList = List();
+    print(data);
     for (var elem in data) {
       final phone = Phone.fromJson(elem);
-      //print(phone.toJson());
+      logger.i(phone.toJson());
       phoneList.add(phone);
-      print(phoneList);
     }
-    logger.i("DB: getReserved");
+    logger.i("DB: gotReserved");
+    logger.i(phoneList);
     return phoneList;
   }
 }

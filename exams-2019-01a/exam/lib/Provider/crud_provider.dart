@@ -15,6 +15,7 @@ class CrudProvider extends ChangeNotifier {
   Future<List<Phone>> getPhones() async {
     if (fromServer) {
       localList = await phonesRep.getAllPhonesFromServer();
+      List<Phone> aux = await dbRep.getAll();
       fromServer = false;
     } else {
       localList = await dbRep.getAll();
@@ -32,7 +33,7 @@ class CrudProvider extends ChangeNotifier {
 
   Future<List<Phone>> getReserved() async {
     logger.i("CRUD Provider: getting reserved phones");
-    return await dbRep.getReservedPhones();
+    return dbRep.getReservedPhones();
   }
 
   void modifyOnlineStatus(bool flag) {

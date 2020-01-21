@@ -12,6 +12,7 @@ class ServerRep {
   var logger = Logger();
   String baseUrl = "http://10.0.2.2:2001/";
   final List<Phone> toPushWhenOnline = new List<Phone>();
+  List<Phone> localList = new List();
   Map<String, String> headers = {"Content-type": "application/json"};
   DBRep dbRep = new DBRep();
 
@@ -27,7 +28,6 @@ class ServerRep {
   Future<List<Phone>> getAllPhonesFromServer() async {
     bool isInternetAvailable = await isConnectedToInternet();
     if (isInternetAvailable) {
-      await addToServer();
       Response response = await get(baseUrl + 'phones');
       if (response.statusCode == 200) {
         List<dynamic> body = jsonDecode(response.body);
@@ -62,6 +62,7 @@ class ServerRep {
       dynamic body = json.decode(response.body);
       Phone phoneNew = new Phone.fromJson(body);
       dbRep.update(phone, phoneNew);
+      dbRep.reserve(phone);
       logger.i("Server: reserved item server");
     }
   }

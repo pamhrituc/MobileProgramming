@@ -37,7 +37,9 @@ class DBCreator {
       $id INTEGER,
       $name VARCHAR(64),
       $size INTEGER,
-      $manufacturer VARCHAR(64)
+      $manufacturer VARCHAR(64),
+      $quantity INTEGER,
+      $reserved INTEGER
     )''';
     await db.execute(createSql);
   }

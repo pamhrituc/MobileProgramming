@@ -56,7 +56,11 @@ class _ReservedListState extends State<ReservedList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: phonesWidget());
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Reserved"),
+        ),
+        body: Container(child: phonesWidget()));
   }
 }
 
@@ -66,30 +70,37 @@ class PhoneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CrudProvider>(context);
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: Container(
-          color: Colors.deepPurpleAccent[100],
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Card(
+      elevation: 10.0,
+      color: Colors.deepPurpleAccent[100],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(
             children: <Widget>[
-              Expanded(
-                child: GestureDetector(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        phone.name,
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ],
-                  ),
-                ),
+              Text(
+                phone.name,
+                style: TextStyle(fontSize: 30),
+              ),
+              Text(
+                "Size: " + phone.size.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                "Manufacturer: " + phone.manufacturer,
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                "Quantity: " + phone.quantity.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                "Reserved: " + phone.reserved.toString(),
+                style: TextStyle(fontSize: 20),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
