@@ -1,11 +1,10 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:exam/Models/item.dart';
 import 'package:logger/logger.dart';
 
 class Screen2Rep {
-  List<Item> list = new List();
+  List<String> list = new List();
   var logger = Logger();
-  List<Item> localList = new List();
+  List<String> localList = new List();
   String baseUrl = "http://10.0.2.2:2001/"; //TODO: CHANGE PORT
   Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -18,31 +17,25 @@ class Screen2Rep {
     }
   }
 
-  Future<List<Item>> getAll() async {
+  Future<List<String>> getAllNames() async {
+    logger.i("Rep: Retrieving all names");
     return list;
   }
 
-  Future<dynamic> addItem(Item item) async {
+  Future<dynamic> addItem(String name) async {
     logger.i("Rep: Adding Item");
-    list.add(item);
+    list.add(name);
 
     ///daca e eroare o sa fie de type string
     ///daca e ok o sa fie de type Item
     ///depinde daca serverul trimite sau nu inapoi obiectu
     ///cu idu setat
-    return item;
+    return name;
   }
 
-  Future<String> deleteItem(Item item) async {
+  Future<String> deleteItem(String name) async {
     logger.i("Rep: Deleting item");
-    list.remove(item); //TODO: Change to id & return error message
+    list.remove(name); //TODO: Change to id & return error message
     return "yelp";
-  }
-
-  Future<String> updateItem(Item oldItem, Item newItem) async {
-    logger.i("Rep: Updating Item");
-    list.remove(oldItem);
-    list.add(newItem); //TODO: error here too
-    return "yas";
   }
 }

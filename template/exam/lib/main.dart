@@ -5,7 +5,9 @@ import 'package:exam/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(
+void main(){
+  //await DBCreator().initDB(); TODO: uncomment if using Database
+  runApp(
       MultiProvider(
         providers: [
           ChangeNotifierProvider<Screen1Provider>.value(
@@ -16,6 +18,7 @@ void main() => runApp(
         child: MyApp(),
       ),
     );
+}
 
 class MyApp extends StatelessWidget {
   @override

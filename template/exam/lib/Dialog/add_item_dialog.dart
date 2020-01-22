@@ -6,7 +6,6 @@ Future<Map<String, dynamic>> addItemDialog({
   BuildContext context,
 }) async {
   final _textKey = GlobalKey<FormState>();
-  TextEditingController _idController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descController = TextEditingController();
   TextEditingController _sizeController = TextEditingController();
